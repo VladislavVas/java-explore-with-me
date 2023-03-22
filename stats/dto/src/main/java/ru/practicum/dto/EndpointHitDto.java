@@ -8,8 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class EndpointHitDto {
-    String app;
-    String uri;
-    Long hits;
-    String timestamp;
+    private String app;
+    private String uri;
+    private Long hits;
+    private String timestamp;
 }

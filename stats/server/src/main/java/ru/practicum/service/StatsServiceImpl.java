@@ -1,7 +1,6 @@
 package ru.practicum.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStats;
 import ru.practicum.mapper.EndPointHitMapper;
@@ -9,7 +8,9 @@ import ru.practicum.repository.StatsRepository;
 import ru.practicum.stats.stats.model.EndpointHit;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 public class StatsServiceImpl implements StatsService {
@@ -24,7 +25,6 @@ public class StatsServiceImpl implements StatsService {
     }
 
     @Override
-    @Transactional
     public EndpointHitDto postHit(EndpointHitDto endpointHitDto) {
         return mapper.toEndpointHitDto(statsRepository.save(mapper.toEndpointHit(endpointHitDto)));
     }
