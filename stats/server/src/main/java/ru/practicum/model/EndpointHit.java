@@ -1,4 +1,4 @@
-package ru.practicum.stats.stats.model;
+package ru.practicum.model;
 
 import lombok.Getter;
 import lombok.Setter;

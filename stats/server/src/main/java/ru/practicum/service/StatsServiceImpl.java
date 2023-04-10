@@ -5,7 +5,7 @@ import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStats;
 import ru.practicum.mapper.EndPointHitMapper;
 import ru.practicum.repository.StatsRepository;
-import ru.practicum.stats.stats.model.EndpointHit;
+import ru.practicum.model.EndpointHit;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,16 +17,16 @@ public class StatsServiceImpl implements StatsService {
 
     private final StatsRepository statsRepository;
 
-    private final EndPointHitMapper mapper;
+    private final EndPointHitMapper endPointHitMapper;
 
-    public StatsServiceImpl(StatsRepository statsRepository, EndPointHitMapper mapper) {
+    public StatsServiceImpl(StatsRepository statsRepository, EndPointHitMapper endPointHitMapper) {
         this.statsRepository = statsRepository;
-        this.mapper = mapper;
+        this.endPointHitMapper = endPointHitMapper;
     }
 
     @Override
     public EndpointHitDto postHit(EndpointHitDto endpointHitDto) {
-        return mapper.toEndpointHitDto(statsRepository.save(mapper.toEndpointHit(endpointHitDto)));
+        return endPointHitMapper.toEndpointHitDto(statsRepository.save(endPointHitMapper.toEndpointHit(endpointHitDto)));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class StatsServiceImpl implements StatsService {
             } else {
                 hitsList = statsRepository.findByUriInAndTimestampBetween(List.of(uri), start, end);
             }
-            viewStats.add(new ViewStats("ewm-main-service", uri, hitsList.size()));
+            viewStats.add(new ViewStats("ewm-main-service", uri, (long) hitsList.size()));
             viewStats.sort(Comparator.comparing(ViewStats::getHits).reversed());
         }
         return viewStats;
