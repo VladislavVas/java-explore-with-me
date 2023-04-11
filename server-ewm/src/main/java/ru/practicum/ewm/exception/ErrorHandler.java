@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import javax.validation.ConstraintViolationException;
 import java.rmi.AccessException;
@@ -45,4 +46,16 @@ public class ErrorHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex);
     }
+
+    @ExceptionHandler(WebClientResponseException.InternalServerError.class)
+    private ResponseEntity<Exception> handleException(InternalError e) {
+        Exception ex = Exception.builder()
+                .message(e.getMessage())
+                .reason("InternalError")
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+                .timestamp(LocalDateTime.now().toString())
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex);
+    }
+
 }

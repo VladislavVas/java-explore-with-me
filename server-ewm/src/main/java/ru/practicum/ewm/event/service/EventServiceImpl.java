@@ -14,7 +14,6 @@ import ru.practicum.ewm.event.model.StateAction;
 import ru.practicum.ewm.event.repository.EventRepository;
 import ru.practicum.ewm.event.repository.LocationRepository;
 import ru.practicum.ewm.exception.ConflictException;
-import ru.practicum.ewm.exception.NoRootException;
 import ru.practicum.ewm.exception.NotFoundException;
 import ru.practicum.ewm.participationRequest.dto.ParticipationRequestDto;
 import ru.practicum.ewm.participationRequest.dto.RequestUpdateDto;
@@ -135,9 +134,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventFullDto> getEventByParamsForAdmin(List<Long> users, List<State> states, List<Long> categories, LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size) {
-
         List<Event> events = eventRepository.getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
-
         return eventMapper.toEventFullDto(events);
     }
 
