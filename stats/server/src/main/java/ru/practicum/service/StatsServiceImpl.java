@@ -5,11 +5,8 @@ import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStats;
 import ru.practicum.mapper.EndPointHitMapper;
 import ru.practicum.repository.StatsRepository;
-import ru.practicum.model.EndpointHit;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -31,17 +28,18 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public List<ViewStats> getViewStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
-        List<ViewStats> viewStats = new ArrayList<>();
-        List<EndpointHit> hitsList;
-        for (String uri : uris) {
+        if (uris == null || uris.isEmpty()) {
             if (unique) {
-                hitsList = statsRepository.findDistinctByUriInAndTimestampBetween(List.of(uri), start, end);
+                return statsRepository.getAllStatsDistinctIp(start, end);
             } else {
-                hitsList = statsRepository.findByUriInAndTimestampBetween(List.of(uri), start, end);
+                return statsRepository.getAllStats(start, end);
             }
-            viewStats.add(new ViewStats("ewm-main-service", uri, (long) hitsList.size()));
-            viewStats.sort(Comparator.comparing(ViewStats::getHits).reversed());
+        } else {
+            if (unique) {
+                return statsRepository.getStatsByUrisDistinctIp(start, end, uris);
+            } else {
+                return statsRepository.getStatsByUris(start, end, uris);
+            }
         }
-        return viewStats;
     }
 }

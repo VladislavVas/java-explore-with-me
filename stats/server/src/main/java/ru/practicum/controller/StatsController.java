@@ -1,5 +1,7 @@
 package ru.practicum.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.EndpointHitDto;
@@ -22,8 +24,8 @@ public class StatsController {
     }
 
     @PostMapping("/hit")
-    public EndpointHitDto postHit(@RequestBody EndpointHitDto endpointHitDto) {
-        return statsService.postHit(endpointHitDto);
+    public ResponseEntity<EndpointHitDto> postHit(@RequestBody EndpointHitDto endpointHitDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(statsService.postHit(endpointHitDto));
     }
 
     @GetMapping("/stats")

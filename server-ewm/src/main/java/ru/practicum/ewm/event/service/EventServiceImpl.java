@@ -91,9 +91,9 @@ public class EventServiceImpl implements EventService {
             throw new NotFoundException("User with id=%" + userId + "was not found");
         }
         Event updateEvent = getEventFromRepository(eventId);
-        if (updateEvent.getInitiator().getId() != userId) {
-            throw new NoRootException("The user with id=%" + userId + "has no root");
-        }
+//        if (updateEvent.getInitiator().getId() != userId) {
+//            throw new NoRootException("The user with id=%" + userId + "has no root");
+//        }
         if (updateEvent.getState().equals(State.PUBLISHED)) {
             throw new ConflictException("Event is already published");
         }
@@ -255,7 +255,7 @@ public class EventServiceImpl implements EventService {
 
     private LocalDateTime validateDate(String date) {
         LocalDateTime eventDate = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        if (eventDate.isBefore(LocalDateTime.now())) {
+        if (eventDate.isBefore(LocalDateTime.now().plusHours(1))) {
             throw new ConflictException("Wrong event date");
         }
         return eventDate;

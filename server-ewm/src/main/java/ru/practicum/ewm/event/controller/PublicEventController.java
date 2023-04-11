@@ -45,11 +45,11 @@ public class PublicEventController {
                                                                  @RequestParam(required = false) String sort,
                                                                  @Valid @PositiveOrZero @RequestParam(defaultValue = "0") int from,
                                                                  @Valid @Positive @RequestParam(defaultValue = "10") int size,
-                                                                 HttpServletRequest request) {
+                                                                 HttpServletRequest servlet) {
         log.info("GET PublicEventController by params");
         return ResponseEntity.status(HttpStatus.OK).body(eventService.getEventsByParamsForPublic(text, categories, paid,
                 rangeStart, rangeEnd,
                 onlyAvailable, sort,
-                from, size, request));
+                from, size, servlet));
     }
 }

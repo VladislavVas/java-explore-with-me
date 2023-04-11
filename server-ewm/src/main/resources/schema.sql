@@ -1,10 +1,10 @@
--- DROP table if exists users cascade;
--- DROP table if exists categories cascade;
--- DROP table if exists locations cascade;
--- DROP table if exists events cascade;
--- DROP table if exists requests cascade;
--- DROP table if exists compilations cascade;
--- DROP table if exists event_compilations cascade;
+DROP table if exists users cascade;
+DROP table if exists categories cascade;
+DROP table if exists locations cascade;
+DROP table if exists events cascade;
+DROP table if exists requests cascade;
+DROP table if exists compilations cascade;
+DROP table if exists event_compilations cascade;
 
 create table if not exists users
 (

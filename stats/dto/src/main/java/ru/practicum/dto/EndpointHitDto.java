@@ -11,6 +11,5 @@ public class EndpointHitDto {
     private String app;
     private String uri;
     private String ip;
-    private Long hits;
     private String timestamp;
 }
