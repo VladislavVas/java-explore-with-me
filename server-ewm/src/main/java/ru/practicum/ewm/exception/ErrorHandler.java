@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import javax.validation.ConstraintViolationException;
@@ -47,7 +48,7 @@ public class ErrorHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex);
     }
 
-    @ExceptionHandler(WebClientResponseException.InternalServerError.class)
+    @ExceptionHandler(HttpServerErrorException.InternalServerError.class)
     private ResponseEntity<Exception> handleException(InternalError e) {
         Exception ex = Exception.builder()
                 .message(e.getMessage())
