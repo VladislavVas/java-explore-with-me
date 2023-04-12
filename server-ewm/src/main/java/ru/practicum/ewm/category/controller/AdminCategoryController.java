@@ -18,6 +18,7 @@ import javax.validation.constraints.Min;
 @RequestMapping("/admin/categories")
 @RequiredArgsConstructor
 public class AdminCategoryController {
+
     private final CategoryService categoryService;
 
 
@@ -40,4 +41,5 @@ public class AdminCategoryController {
         log.info("DELETE AdminCategoryController id=" + catId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
 }

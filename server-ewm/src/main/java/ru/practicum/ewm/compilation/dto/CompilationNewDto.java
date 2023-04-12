@@ -13,8 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CompilationNewDto {
+
     private List<Long> events;
+
     private Boolean pinned;
+
     @NotNull(groups = {Create.class}, message = "Field: title. Error: must not be null")
     private String title;
+
 }

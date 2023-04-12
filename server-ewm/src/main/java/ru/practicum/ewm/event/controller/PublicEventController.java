@@ -52,4 +52,5 @@ public class PublicEventController {
                 onlyAvailable, sort,
                 from, size, servlet));
     }
+
 }

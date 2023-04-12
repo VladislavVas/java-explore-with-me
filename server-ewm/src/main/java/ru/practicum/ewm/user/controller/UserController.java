@@ -19,6 +19,7 @@ import java.util.List;
 @RequestMapping(path = "/admin/users")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
 
     @PostMapping
@@ -41,4 +42,5 @@ public class UserController {
         log.info("DELETE UserController id=" + userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
 }

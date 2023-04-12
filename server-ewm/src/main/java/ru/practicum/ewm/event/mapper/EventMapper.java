@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface EventMapper {
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "initiator", ignore = true)
     @Mapping(target = "category", ignore = true)
@@ -33,9 +34,10 @@ public interface EventMapper {
     Event toEvent(UpdateEventUserRequest userRequest, @MappingTarget Event event);
 
     @Mapping(source = "eventDate", target = "eventDate", dateFormat = "yyyy-MM-dd HH:mm:ss")
-    ShortEventDto toShortEventDto (Event event);
+    ShortEventDto toShortEventDto(Event event);
 
     List<ShortEventDto> toShortEventDtoList(List<Event> events);
 
     List<EventFullDto> toEventFullDto(List<Event> events);
+
 }

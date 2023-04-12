@@ -39,8 +39,7 @@ public class ParticipationServiceImpl implements ParticipationService {
             event.setConfirmedRequests(event.getConfirmedRequests() + 1);
             eventRepository.save(event);
         }
-        participationRequestRepository.save(participationRequest);
-        return requestMapper.toParticipationRequestDto(participationRequest);
+        return requestMapper.toParticipationRequestDto(participationRequestRepository.save(participationRequest));
     }
 
     @Override
@@ -98,5 +97,6 @@ public class ParticipationServiceImpl implements ParticipationService {
             return false;
         }
     }
+
 }
 

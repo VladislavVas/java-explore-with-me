@@ -54,4 +54,5 @@ public class StatClient extends BaseClient {
         List<ViewStats> viewStatsList = response.hasBody() ? response.getBody() : null;
         return viewStatsList != null && !viewStatsList.isEmpty() ? viewStatsList.get(0).getHits() : 0L;
     }
+
 }

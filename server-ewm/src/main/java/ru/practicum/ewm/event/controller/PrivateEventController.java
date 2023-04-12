@@ -72,4 +72,5 @@ public class PrivateEventController {
         log.info("GET PrivateEventController approve requsts" + userId + " event id " + eventId);
         return ResponseEntity.status(HttpStatus.OK).body(eventService.approveRequests(userId, eventId, requests));
     }
+
 }

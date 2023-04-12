@@ -1,6 +1,7 @@
 package ru.practicum.ewm.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.exception.NotFoundException;
 import ru.practicum.ewm.user.dto.NewUserRequest;
@@ -8,7 +9,6 @@ import ru.practicum.ewm.user.dto.UserDto;
 import ru.practicum.ewm.user.mapper.UserMapper;
 import ru.practicum.ewm.user.model.User;
 import ru.practicum.ewm.user.repository.UserRepository;
-
 
 import java.util.List;
 
@@ -32,12 +32,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getListUsers(List<Long> ids, Integer from, Integer size) {
-        return userMapper.toListUserDto(userRepository.getByIds(ids, size, from));
+        return userMapper.toListUserDto(userRepository.findAllByIdIn(ids, PageRequest.of(from / size, size)));
     }
 
     @Override
     public void deleteUser(Long id) {
-            userRepository.deleteById(id);
+        userRepository.deleteById(id);
     }
 
     private User getUserFromRepository(long id) {
@@ -45,11 +45,4 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException("User with id=%" + id + "was not found"));
     }
 
-//    private int getPage(int from, int size) {
-//        if (from < 0 || size <= 0) {
-//            throw new ValidateException("Invalid page or size parameters");
-//        } else {
-//            return from / size;
-//        }
-//    }
 }

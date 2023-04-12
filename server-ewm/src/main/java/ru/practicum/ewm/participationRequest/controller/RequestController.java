@@ -16,12 +16,13 @@ import java.util.List;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class RequestController {
+
     private final ParticipationService participationService;
 
     @PostMapping("{userId}/requests")
     public ResponseEntity<ParticipationRequestDto> createRequest(@PathVariable @Min(1) Long userId,
                                                                  @RequestParam @Min(1) Long eventId) {
-        log.info("POST RequestController user id=" + userId+ " event id=" + eventId);
+        log.info("POST RequestController user id=" + userId + " event id=" + eventId);
         return ResponseEntity.status(HttpStatus.CREATED).body(participationService.createRequest(userId, eventId));
     }
 
@@ -34,7 +35,8 @@ public class RequestController {
     @PatchMapping("{userId}/requests/{requestId}/cancel")
     public ResponseEntity<ParticipationRequestDto> cancelRequest(@PathVariable @Min(1) Long userId,
                                                                  @PathVariable @Min(1) Long requestId) {
-        log.info("PATCH RequestController user id=" + userId+ " request id=" + requestId);
+        log.info("PATCH RequestController user id=" + userId + " request id=" + requestId);
         return ResponseEntity.status(HttpStatus.OK).body(participationService.canceledRequest(userId, requestId));
     }
+
 }

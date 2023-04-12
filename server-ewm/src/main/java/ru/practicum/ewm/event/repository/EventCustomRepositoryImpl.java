@@ -1,6 +1,5 @@
 package ru.practicum.ewm.event.repository;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.event.model.State;
 
@@ -88,4 +87,5 @@ public class EventCustomRepositoryImpl implements EventCustomRepository {
         query.select(root).where(criteria);
         return entityManager.createQuery(query).setFirstResult(from).setMaxResults(size).getResultList();
     }
+
 }

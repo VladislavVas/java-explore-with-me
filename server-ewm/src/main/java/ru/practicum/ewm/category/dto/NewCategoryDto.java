@@ -12,7 +12,9 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NewCategoryDto {
+
     @NotBlank(groups = {Create.class}, message = "Field: name. Error: must not be blank.")
     @NotNull(groups = {Create.class}, message = "Field: name. Error: must not be null")
     private String name;
+
 }

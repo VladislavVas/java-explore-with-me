@@ -31,4 +31,5 @@ public class PublicCategoryController {
         log.info("GET PublicCategoryController id=" + catId);
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.getCategory(catId));
     }
+
 }

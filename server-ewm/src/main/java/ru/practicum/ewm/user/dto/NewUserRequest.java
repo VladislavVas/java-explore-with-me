@@ -13,9 +13,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NewUserRequest {
+
     @NotNull(groups = {Create.class}, message = "Field: name. Error: must not be null")
     @NotBlank(groups = {Create.class}, message = "Field: name. Error: must not be blank.")
     private String name;
+
     @NotNull(groups = {Create.class}, message = "Field: email. Error: must not be null")
     @NotBlank(groups = {Create.class}, message = "Field: email. Error: must not be blank.")
     @Email(groups = {Create.class}, message = "Field: email. Error: invalid format")

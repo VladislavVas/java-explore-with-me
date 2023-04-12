@@ -41,4 +41,5 @@ public class AdminCompilationController {
         log.info("PATH AdminCompilationController id= " + compId + compilationDto);
         return ResponseEntity.status(HttpStatus.OK).body(compilationService.updateCompilation(compId, compilationDto));
     }
+
 }

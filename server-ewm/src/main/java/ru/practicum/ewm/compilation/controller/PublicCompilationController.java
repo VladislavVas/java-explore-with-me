@@ -39,4 +39,5 @@ public class PublicCompilationController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(compilationService.getAllCompilations(pinned, from, size));
     }
+
 }

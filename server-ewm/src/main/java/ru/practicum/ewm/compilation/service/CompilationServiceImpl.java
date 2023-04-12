@@ -40,11 +40,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public CompilationDto updateCompilation(Long compId, CompilationNewDto compilationDto) {
         Compilation compilation = getCompilationFromRepository(compId);
-        List<Long> newEventsIds = compilationDto.getEvents();
         Set<Event> findEvents = eventRepository.findAllByIdIn(compilationDto.getEvents());
-        for (Long eventId : newEventsIds) {
-            findEvents.add(getEventFromRepository(eventId));
-        }
         compilation.setEvents(findEvents);
         compilation = compilationMapper.mapToCompilation(compilationDto, compilation);
         return compilationMapper.toCompilationDto(compilationRepository.save(compilation));
@@ -59,8 +55,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public CompilationDto getCompilation(Long compId) {
         Compilation compilation = getCompilationFromRepository(compId);
-        Set<Event> events = new HashSet<Event>(compilation.getEvents());
-//        Set<Event> events = compilation.getEvents();
+        Set<Event> events = new HashSet<>(compilation.getEvents());
         events.forEach(event -> event.setViews(statClient.getViews(event.getId())));
         return compilationMapper.toCompilationDto(compilation);
     }
@@ -94,4 +89,5 @@ public class CompilationServiceImpl implements CompilationService {
         return compilationRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Compilation with id=%" + id + "was not found"));
     }
+
 }

@@ -1,6 +1,8 @@
 package ru.practicum.ewm.event.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.category.model.Category;
@@ -121,7 +123,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<ShortEventDto> getEventsByInitiator(Long initiatorId, Integer from, Integer size) {
         if (userRepository.existsById(initiatorId)) {
-            List<Event> events = eventRepository.findAllByInitiatorId(initiatorId, size, from);
+            List<Event> events = eventRepository.findAllByInitiatorId(initiatorId, PageRequest.of(from/size, size));
             List<ShortEventDto> result = eventMapper.toShortEventDtoList(events);
             return result;
         } else throw new NotFoundException("User with id=%" + initiatorId + "was not found");
@@ -148,10 +150,8 @@ public class EventServiceImpl implements EventService {
         List<Event> events = eventRepository.getEventsByPublic(text, categories, paid, rangeStart, rangeEnd, from, size);
         Map<Long, Integer> eventsParticipantLimit = new HashMap<>();
         events.forEach(event -> eventsParticipantLimit.put(event.getId(), event.getParticipantLimit()));
-        events.forEach(event -> statClient.postStat(servlet, "EWM-service"));
-        events.forEach(event -> event.setViews(statClient.getViews(event.getId())));
+        events.stream().map(event -> statClient.getViews(event.getId())).collect(Collectors.toList());
         List<ShortEventDto> eventDtos = eventMapper.toShortEventDtoList(events);
-        eventDtos.stream().map(shortEventDto -> statClient.getViews(shortEventDto.getId())).collect(Collectors.toList());
         if (onlyAvailable) {
             eventDtos = eventDtos.stream()
                     .filter(eventShort -> (eventsParticipantLimit.get(eventShort.getId()) == 0 ||
@@ -163,15 +163,15 @@ public class EventServiceImpl implements EventService {
         } else if (sort != null && sort.equals("EVENT_DATE")) {
             eventDtos.sort(Comparator.comparing(ShortEventDto::getEventDate));
         }
+        statClient.postStat(servlet, "EWM-service");
         return eventDtos;
     }
 
     @Override
-    @Transactional
     public EventFullDto getEventById(Long id, HttpServletRequest servlet) {
         Event event = getEventFromRepository(id);
+        event.setViews(statClient.getViews(id));
         statClient.postStat(servlet, "EWM-server");
-        event.setViews(statClient.getViews(id) + 1);
         eventRepository.save(event);
         return eventMapper.toEventFullDto(event);
     }

@@ -2,6 +2,7 @@ package ru.practicum.ewm.participationRequest.dto;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -10,6 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestUpdateResultDto {
-    private List<ParticipationRequestDto> confirmedRequests;
-    private List<ParticipationRequestDto> rejectedRequests;
+
+    private List<ParticipationRequestDto> confirmedRequests = new ArrayList<>();
+
+    private List<ParticipationRequestDto> rejectedRequests = new ArrayList<>();
+
 }

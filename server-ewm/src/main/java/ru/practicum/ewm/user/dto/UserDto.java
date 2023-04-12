@@ -15,11 +15,14 @@ import javax.validation.constraints.NotNull;
 public class UserDto {
 
     private Long id;
+
     @NotNull(groups = {Create.class}, message = "Field: name. Error: must not be null")
     @NotBlank(groups = {Create.class}, message = "Field: name. Error: must not be blank.")
     private String name;
+
     @NotNull(groups = {Create.class}, message = "Field: email. Error: must not be null")
     @NotBlank(groups = {Create.class}, message = "Field: email. Error: must not be blank.")
     @Email(groups = {Create.class}, message = "Field: email. Error: invalid format")
     private String email;
+
 }

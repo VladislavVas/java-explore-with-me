@@ -21,4 +21,5 @@ public interface EndPointHitMapper {
             dateFormat = "yyyy-MM-dd HH:mm:ss"
     )
     EndpointHitDto toEndpointHitDto(EndpointHit endpointHit);
+
 }

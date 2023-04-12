@@ -12,10 +12,12 @@ import java.util.Set;
 @Entity
 @Table(name = "compilations")
 public class Compilation {
+
     @Id
     @Column(name = "compilation_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToMany
     @JoinTable(
             name = "event_compilations",
@@ -24,8 +26,11 @@ public class Compilation {
 
     )
     private Set<Event> events;
+
     @Column
     private Boolean pinned = Boolean.FALSE;
+
     @Column(nullable = false)
     private String title;
+
 }

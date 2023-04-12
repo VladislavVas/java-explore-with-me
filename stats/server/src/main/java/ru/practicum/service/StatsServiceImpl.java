@@ -4,12 +4,9 @@ import org.springframework.stereotype.Service;
 import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStats;
 import ru.practicum.mapper.EndPointHitMapper;
-import ru.practicum.model.EndpointHit;
 import ru.practicum.repository.StatsRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -30,20 +27,8 @@ public class StatsServiceImpl implements StatsService {
     }
 
     @Override
-    public List<ViewStats> getViewStats(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique) {
-        List<ViewStats> viewStats = new ArrayList<>();
-        List<EndpointHit> hitsList;
-        for (String uri : uris) {
-            if (!unique) {
-                hitsList = statsRepository.findByUriInAndTimestampBetween(List.of(uri), start, end);
-                viewStats.add(new ViewStats("EWM-service", uri, hitsList.size()));
-            }
-            if (unique) {
-                hitsList = statsRepository.findDistinctByUriInAndTimestampBetween(List.of(uri), start, end);
-                viewStats.add(new ViewStats("EWM-service", uri, hitsList.size()));
-            }
-            viewStats.sort(Comparator.comparing(ViewStats::getHits).reversed());
-        }
-        return viewStats;
+    public List<ViewStats> getViewStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+        return statsRepository.getHits(start, end, uris, unique);
     }
+
 }

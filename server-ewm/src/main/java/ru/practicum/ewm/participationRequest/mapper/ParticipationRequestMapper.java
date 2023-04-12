@@ -14,7 +14,7 @@ public interface ParticipationRequestMapper {
 
     @Mapping(source = "event.id", target = "event")
     @Mapping(source = "requester.id", target = "requester")
-//    @Mapping(source = "requestId", target = "id")
     @Mapping(source = "created", target = "created", dateFormat = "yyyy-MM-dd HH:mm:ss")
     ParticipationRequestDto toParticipationRequestDto(ParticipationRequest toParticipationRequest);
+
 }

@@ -25,6 +25,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 public class AdminEventController {
+
     private final EventService eventService;
 
     @PatchMapping("{eventId}")
@@ -47,4 +48,5 @@ public class AdminEventController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 eventService.getEventByParamsForAdmin(users, states, categories, rangeStart, rangeEnd, from, size));
     }
+
 }
