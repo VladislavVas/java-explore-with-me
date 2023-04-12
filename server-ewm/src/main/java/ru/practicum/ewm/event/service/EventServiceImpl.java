@@ -2,6 +2,7 @@ package ru.practicum.ewm.event.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.category.repository.CategoryRepository;
 import ru.practicum.ewm.client.StatClient;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
@@ -45,6 +47,7 @@ public class EventServiceImpl implements EventService {
     private final StatClient statClient;
 
     @Override
+    @Transactional
     public EventFullDto createEvent(Long userId, EventDtoNew eventDtoNew) {
         User initiator = getUserFromRepository(userId);
         Category category = getCategoryFromRepository(eventDtoNew.getCategory());
@@ -62,6 +65,7 @@ public class EventServiceImpl implements EventService {
 
 
     @Override
+    @Transactional
     public EventFullDto updateEventByAdmin(Long eventId, UpdateEventAdminRequest adminRequest) {
         Event updateEvent = getEventFromRepository(eventId);
         eventMapper.toEvent(adminRequest, updateEvent);
@@ -85,14 +89,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto updateEventByUser(Long userId, Long eventId, UpdateEventUserRequest userRequest) {
         if (!userRepository.existsById(userId)) {
             throw new NotFoundException("User with id=%" + userId + "was not found");
         }
         Event updateEvent = getEventFromRepository(eventId);
-//        if (updateEvent.getInitiator().getId() != userId) {
-//            throw new NoRootException("The user with id=%" + userId + "has no root");
-//        }
         if (updateEvent.getState().equals(State.PUBLISHED)) {
             throw new ConflictException("Event is already published");
         }
@@ -165,10 +167,11 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto getEventById(Long id, HttpServletRequest servlet) {
         Event event = getEventFromRepository(id);
         statClient.postStat(servlet, "EWM-server");
-        event.setViews(statClient.getViews(id));
+        event.setViews(statClient.getViews(id) + 1);
         eventRepository.save(event);
         return eventMapper.toEventFullDto(event);
     }

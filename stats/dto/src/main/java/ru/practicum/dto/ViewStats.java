@@ -11,4 +11,13 @@ public class ViewStats {
     private String app;
     private String uri;
     private Integer hits;
+
+    @Override
+    public String toString() {
+        return "ViewStats{" +
+                "app='" + app + '\'' +
+                ", uri='" + uri + '\'' +
+                ", hits=" + hits +
+                '}';
+    }
 }

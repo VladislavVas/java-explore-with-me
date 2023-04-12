@@ -30,9 +30,9 @@ public class StatsController {
 
     @GetMapping("/stats")
     public ResponseEntity<List<ViewStats>> getViewStats(@RequestParam String start,
-                                        @RequestParam String end,
-                                        @RequestParam(required = false) String[] uris,
-                                        @RequestParam(required = false) Boolean unique) {
+                                                        @RequestParam String end,
+                                                        @RequestParam(required = false) String[] uris,
+                                                        @RequestParam(defaultValue = "false") Boolean unique) {
         LocalDateTime startFromDto = LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         LocalDateTime endFromDto = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         return ResponseEntity.status(HttpStatus.OK).body(statsService.getViewStats(startFromDto, endFromDto, uris, unique));

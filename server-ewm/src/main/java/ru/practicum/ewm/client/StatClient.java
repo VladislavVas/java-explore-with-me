@@ -6,6 +6,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.client.BaseClient;
 import ru.practicum.dto.EndpointHitDto;
@@ -28,6 +29,7 @@ public class StatClient extends BaseClient {
                 .build());
     }
 
+    @Transactional
     public void postStat(HttpServletRequest servlet, String app) {
         EndpointHitDto hit = EndpointHitDto
                 .builder()
@@ -39,6 +41,7 @@ public class StatClient extends BaseClient {
         post("/hit", hit);
     }
 
+    @Transactional
     public Long getViews(Long eventId) {
         String url = "/stats?start={start}&end={end}&uris={uris}&unique={unique}";
         Map<String, Object> parameters = Map.of(

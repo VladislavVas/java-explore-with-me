@@ -30,18 +30,18 @@ public class StatsServiceImpl implements StatsService {
     }
 
     @Override
-    public List<ViewStats> getViewStats(LocalDateTime start, LocalDateTime end, String[] uris, Boolean unique) {
+    public List<ViewStats> getViewStats(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique) {
         List<ViewStats> viewStats = new ArrayList<>();
         List<EndpointHit> hitsList;
         for (String uri : uris) {
-            if (unique) {
-                hitsList = statsRepository.findDistinctByUriInAndTimestampBetween(List.of(uri), start, end);
-                viewStats.add(new ViewStats("EWM-service", uri, hitsList.size()));
-            } else if (!unique || unique == null) {
+            if (!unique) {
                 hitsList = statsRepository.findByUriInAndTimestampBetween(List.of(uri), start, end);
                 viewStats.add(new ViewStats("EWM-service", uri, hitsList.size()));
             }
-
+            if (unique) {
+                hitsList = statsRepository.findDistinctByUriInAndTimestampBetween(List.of(uri), start, end);
+                viewStats.add(new ViewStats("EWM-service", uri, hitsList.size()));
+            }
             viewStats.sort(Comparator.comparing(ViewStats::getHits).reversed());
         }
         return viewStats;

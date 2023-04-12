@@ -13,7 +13,7 @@ import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//@Qualifier("events")
+
 public class EventCustomRepositoryImpl implements EventCustomRepository {
 
     @PersistenceContext
