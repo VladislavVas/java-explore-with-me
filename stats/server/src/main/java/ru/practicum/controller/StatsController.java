@@ -29,13 +29,13 @@ public class StatsController {
     }
 
     @GetMapping("/stats")
-    public List<ViewStats> getViewStats(@RequestParam String start,
+    public ResponseEntity<List<ViewStats>> getViewStats(@RequestParam String start,
                                         @RequestParam String end,
-                                        @RequestParam(required = false) List<String> uris,
-                                        @RequestParam(defaultValue = "false") Boolean unique) {
+                                        @RequestParam(required = false) String[] uris,
+                                        @RequestParam(required = false) Boolean unique) {
         LocalDateTime startFromDto = LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         LocalDateTime endFromDto = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        return statsService.getViewStats(startFromDto, endFromDto, uris, unique);
+        return ResponseEntity.status(HttpStatus.OK).body(statsService.getViewStats(startFromDto, endFromDto, uris, unique));
 
     }
 }

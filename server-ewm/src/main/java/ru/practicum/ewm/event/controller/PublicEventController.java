@@ -29,7 +29,7 @@ public class PublicEventController {
     private final EventService eventService;
 
     @GetMapping("{id}")
-    public ResponseEntity<EventFullDto> getEventById(@PathVariable @Min(1) long id,  HttpServletRequest servlet) {
+    public ResponseEntity<EventFullDto> getEventById(@PathVariable @Min(1) Long id,  HttpServletRequest servlet) {
         log.info("GET PublicEventController id=" + id);
         return ResponseEntity.status(HttpStatus.OK).body(eventService.getEventById(id, servlet));
     }
@@ -43,8 +43,8 @@ public class PublicEventController {
                                                                  @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
                                                                  @RequestParam(defaultValue = "false") Boolean onlyAvailable,
                                                                  @RequestParam(required = false) String sort,
-                                                                 @Valid @PositiveOrZero @RequestParam(defaultValue = "0") int from,
-                                                                 @Valid @Positive @RequestParam(defaultValue = "10") int size,
+                                                                 @Valid @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                                                 @Valid @Positive @RequestParam(defaultValue = "10") Integer size,
                                                                  HttpServletRequest servlet) {
         log.info("GET PublicEventController by params");
         return ResponseEntity.status(HttpStatus.OK).body(eventService.getEventsByParamsForPublic(text, categories, paid,

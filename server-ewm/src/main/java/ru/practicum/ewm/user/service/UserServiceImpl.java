@@ -26,17 +26,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(long id) {
+    public UserDto getUserById(Long id) {
         return userMapper.toUserDto(getUserFromRepository(id));
     }
 
     @Override
-    public List<UserDto> getListUsers(List<Long> ids, int from, int size) {
+    public List<UserDto> getListUsers(List<Long> ids, Integer from, Integer size) {
         return userMapper.toListUserDto(userRepository.getByIds(ids, size, from));
     }
 
     @Override
-    public void deleteUser(long id) {
+    public void deleteUser(Long id) {
             userRepository.deleteById(id);
     }
 

@@ -4,9 +4,12 @@ import org.springframework.stereotype.Service;
 import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStats;
 import ru.practicum.mapper.EndPointHitMapper;
+import ru.practicum.model.EndpointHit;
 import ru.practicum.repository.StatsRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -27,19 +30,20 @@ public class StatsServiceImpl implements StatsService {
     }
 
     @Override
-    public List<ViewStats> getViewStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
-        if (uris == null || uris.isEmpty()) {
+    public List<ViewStats> getViewStats(LocalDateTime start, LocalDateTime end, String[] uris, Boolean unique) {
+        List<ViewStats> viewStats = new ArrayList<>();
+        List<EndpointHit> hitsList;
+        for (String uri : uris) {
             if (unique) {
-                return statsRepository.getAllStatsDistinctIp(start, end);
-            } else {
-                return statsRepository.getAllStats(start, end);
+                hitsList = statsRepository.findDistinctByUriInAndTimestampBetween(List.of(uri), start, end);
+                viewStats.add(new ViewStats("EWM-service", uri, hitsList.size()));
+            } else if (!unique || unique == null) {
+                hitsList = statsRepository.findByUriInAndTimestampBetween(List.of(uri), start, end);
+                viewStats.add(new ViewStats("EWM-service", uri, hitsList.size()));
             }
-        } else {
-            if (unique) {
-                return statsRepository.getStatsByUrisDistinctIp(start, end, uris);
-            } else {
-                return statsRepository.getStatsByUris(start, end, uris);
-            }
+
+            viewStats.sort(Comparator.comparing(ViewStats::getHits).reversed());
         }
+        return viewStats;
     }
 }

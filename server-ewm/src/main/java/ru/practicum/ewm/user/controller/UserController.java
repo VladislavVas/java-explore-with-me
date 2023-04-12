@@ -29,14 +29,14 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getListUsers(@RequestParam(required = false) List<Long> ids,
-                                                      @RequestParam(defaultValue = "0") int from,
-                                                      @RequestParam(defaultValue = "10") int size) {
+                                                      @RequestParam(defaultValue = "0") Integer from,
+                                                      @RequestParam(defaultValue = "10") Integer size) {
         log.info("GET UserController by ids =" + ids);
         return ResponseEntity.status(HttpStatus.OK).body(userService.getListUsers(ids, from, size));
     }
 
     @DeleteMapping("{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable @Min(1) long userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable @Min(1) Long userId) {
         userService.deleteUser(userId);
         log.info("DELETE UserController id=" + userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

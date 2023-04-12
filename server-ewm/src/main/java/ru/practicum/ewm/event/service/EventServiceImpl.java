@@ -117,7 +117,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<ShortEventDto> getEventsByInitiator(Long initiatorId, int from, int size) {
+    public List<ShortEventDto> getEventsByInitiator(Long initiatorId, Integer from, Integer size) {
         if (userRepository.existsById(initiatorId)) {
             List<Event> events = eventRepository.findAllByInitiatorId(initiatorId, size, from);
             List<ShortEventDto> result = eventMapper.toShortEventDtoList(events);
@@ -133,13 +133,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventFullDto> getEventByParamsForAdmin(List<Long> users, List<State> states, List<Long> categories, LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size) {
+    public List<EventFullDto> getEventByParamsForAdmin(List<Long> users, List<State> states, List<Long> categories, LocalDateTime rangeStart, LocalDateTime rangeEnd, Integer from, Integer size) {
         List<Event> events = eventRepository.getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
         return eventMapper.toEventFullDto(events);
     }
 
     @Override
-    public List<ShortEventDto> getEventsByParamsForPublic(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart, LocalDateTime rangeEnd, Boolean onlyAvailable, String sort, int from, int size, HttpServletRequest servlet) {
+    public List<ShortEventDto> getEventsByParamsForPublic(String text, List<Long> categories, Boolean paid,
+                                                          LocalDateTime rangeStart, LocalDateTime rangeEnd,
+                                                          Boolean onlyAvailable, String sort, Integer from, Integer size,
+                                                          HttpServletRequest servlet) {
         List<Event> events = eventRepository.getEventsByPublic(text, categories, paid, rangeStart, rangeEnd, from, size);
         Map<Long, Integer> eventsParticipantLimit = new HashMap<>();
         events.forEach(event -> eventsParticipantLimit.put(event.getId(), event.getParticipantLimit()));
@@ -162,7 +165,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventFullDto getEventById(long id, HttpServletRequest servlet) {
+    public EventFullDto getEventById(Long id, HttpServletRequest servlet) {
         Event event = getEventFromRepository(id);
         statClient.postStat(servlet, "EWM-server");
         event.setViews(statClient.getViews(id));

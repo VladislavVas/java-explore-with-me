@@ -20,14 +20,14 @@ public class PublicCategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getCategories(@RequestParam(defaultValue = "0") int from,
-                                                           @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<CategoryDto>> getCategories(@RequestParam(defaultValue = "0") Integer from,
+                                                           @RequestParam(defaultValue = "10") Integer size) {
         log.info("GET PublicCategoryController from" + from + " size " + size);
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.getListCategory(from, size));
     }
 
     @GetMapping("{catId}")
-    public ResponseEntity<CategoryDto> getCategory(@PathVariable @Min(1) long catId) {
+    public ResponseEntity<CategoryDto> getCategory(@PathVariable @Min(1) Long catId) {
         log.info("GET PublicCategoryController id=" + catId);
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.getCategory(catId));
     }

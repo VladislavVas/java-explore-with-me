@@ -62,8 +62,7 @@ public class ParticipationServiceImpl implements ParticipationService {
             eventRepository.save(event);
         }
         request.setStatus(RequestStatus.CANCELED);
-        participationRequestRepository.save(request);
-        return requestMapper.toParticipationRequestDto(request);
+        return requestMapper.toParticipationRequestDto(participationRequestRepository.save(request));
     }
 
     private ParticipationRequest getRequestFromRepository(long id) {

@@ -22,7 +22,7 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
-    private long id;
+    private Long id;
     @Column(name = "title", length = 120)
     private String title;
     @Column(name = "annotation", length = 2000)

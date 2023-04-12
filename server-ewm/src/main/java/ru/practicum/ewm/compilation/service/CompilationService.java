@@ -6,15 +6,15 @@ import ru.practicum.ewm.compilation.dto.CompilationNewDto;
 import java.util.List;
 
 public interface CompilationService {
-    CompilationDto create(CompilationNewDto compilationDto);
 
+    CompilationDto create(CompilationNewDto compilationDto);
 
     CompilationDto updateCompilation(Long compId, CompilationNewDto compilationDto);
 
-    void delete(long compId);
+    void delete(Long compId);
 
-    CompilationDto getCompilation(long compId);
+    CompilationDto getCompilation(Long compId);
 
-    List<CompilationDto> getAllCompilations(Boolean pinned, int from, int size);
+    List<CompilationDto> getAllCompilations(Boolean pinned, Integer from, Integer size);
 
 }

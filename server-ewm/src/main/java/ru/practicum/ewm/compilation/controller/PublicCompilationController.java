@@ -33,8 +33,8 @@ public class PublicCompilationController {
     @GetMapping
     public ResponseEntity<List<CompilationDto>> getAllCompilations(
             @RequestParam(required = false) Boolean pinned,
-            @Valid @PositiveOrZero @RequestParam(defaultValue = "0") int from,
-            @Valid @Positive @RequestParam(defaultValue = "10") int size) {
+            @Valid @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+            @Valid @Positive @RequestParam(defaultValue = "10") Integer size) {
         log.info("GET PublicCompilationController ALL by size= " + size + " from= " + from + " pinned = " + pinned);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(compilationService.getAllCompilations(pinned, from, size));

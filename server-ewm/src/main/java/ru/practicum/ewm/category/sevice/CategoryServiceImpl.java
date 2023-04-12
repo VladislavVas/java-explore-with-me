@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto updateCategory(long id, CategoryDto categoryDto) {
+    public CategoryDto updateCategory(Long id, CategoryDto categoryDto) {
         if (!categoryRepository.existsById(id)) {
             throw new NotFoundException("Category with id=%" + categoryDto.getId() + "was not found");
         }
@@ -39,18 +39,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto getCategory(long id) {
+    public CategoryDto getCategory(Long id) {
         Category category = getCategoryFromRepository(id);
         return categoryMapper.toCategoryDto(category);
     }
 
     @Override
-    public void deleteCategory(long id) {
+    public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);
     }
 
     @Override
-    public List<CategoryDto> getListCategory(int from, int size) {
+    public List<CategoryDto> getListCategory(Integer from, Integer size) {
         int page = getPage(from, size);
         List<Category> categories = categoryRepository.findAll(PageRequest.of(page, size)).getContent();
         return categoryMapper.toCategoryDtoList(categories);

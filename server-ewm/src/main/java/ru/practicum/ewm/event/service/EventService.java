@@ -19,7 +19,7 @@ public interface EventService {
 
     EventFullDto updateEventByUser(Long userId, Long eventId, UpdateEventUserRequest userRequest);
 
-    List<ShortEventDto> getEventsByInitiator(Long userId, int from, int size);
+    List<ShortEventDto> getEventsByInitiator(Long userId, Integer from, Integer size);
 
     EventFullDto getEventByIdAndInitiatorId(Long userId, Long eventId);
 
@@ -28,7 +28,7 @@ public interface EventService {
                                                 List<Long> categories,
                                                 LocalDateTime rangeStart,
                                                 LocalDateTime rangeEnd,
-                                                int from, int size);
+                                                Integer from, Integer size);
 
     List<ShortEventDto> getEventsByParamsForPublic(String text,
                                                    List<Long> categories,
@@ -37,10 +37,10 @@ public interface EventService {
                                                    LocalDateTime rangeEnd,
                                                    Boolean onlyAvailable,
                                                    String sort,
-                                                   int from, int size,
+                                                   Integer from, Integer size,
                                                    HttpServletRequest servletRequest);
 
-    EventFullDto getEventById(long id, HttpServletRequest servlet);
+    EventFullDto getEventById(Long id, HttpServletRequest servlet);
 
     List<ParticipationRequestDto> getEventRequestsForInitiator(Long userId, Long eventId);
 

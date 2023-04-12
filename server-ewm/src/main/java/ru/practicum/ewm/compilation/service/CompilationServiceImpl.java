@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.client.StatClient;
 import ru.practicum.ewm.compilation.dto.CompilationDto;
 import ru.practicum.ewm.compilation.dto.CompilationNewDto;
@@ -15,6 +16,7 @@ import ru.practicum.ewm.event.repository.EventRepository;
 import ru.practicum.ewm.exception.NotFoundException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +28,6 @@ public class CompilationServiceImpl implements CompilationService {
     private final EventRepository eventRepository;
     private final CompilationMapper compilationMapper;
     private final StatClient statClient;
-
 
     @Override
     public CompilationDto create(CompilationNewDto compilationNewDto) {
@@ -50,20 +51,22 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public void delete(long compId) {
+    @Transactional
+    public void delete(Long compId) {
         compilationRepository.deleteById(compId);
     }
 
     @Override
-    public CompilationDto getCompilation(long compId) {
+    public CompilationDto getCompilation(Long compId) {
         Compilation compilation = getCompilationFromRepository(compId);
-        Set<Event> events = compilation.getEvents();
+        Set<Event> events = new HashSet<Event>(compilation.getEvents());
+//        Set<Event> events = compilation.getEvents();
         events.forEach(event -> event.setViews(statClient.getViews(event.getId())));
         return compilationMapper.toCompilationDto(compilation);
     }
 
     @Override
-    public List<CompilationDto> getAllCompilations(Boolean pinned, int from, int size) {
+    public List<CompilationDto> getAllCompilations(Boolean pinned, Integer from, Integer size) {
 
         Pageable pageable = PageRequest.of(from / size, size);
         List<Compilation> compilations;

@@ -20,7 +20,6 @@ import java.util.Map;
 @Component
 public class StatClient extends BaseClient {
 
-
     @Autowired
     public StatClient(@Value("${STATS-SERVER}") String serverUrl, RestTemplateBuilder builder) {
         super(builder

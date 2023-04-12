@@ -29,7 +29,7 @@ public class AdminCompilationController {
     }
 
     @DeleteMapping("{compId}")
-    public ResponseEntity<Void> deleteCompilation(@PathVariable @Min(1) long compId) {
+    public ResponseEntity<Void> deleteCompilation(@PathVariable @Min(1) Long compId) {
         compilationService.delete(compId);
         log.info("DELETE AdminCompilationController id=" + compId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
