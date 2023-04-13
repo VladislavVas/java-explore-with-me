@@ -6,6 +6,8 @@ import ru.practicum.ewm.compilation.dto.CompilationNewDto;
 import ru.practicum.ewm.compilation.model.Compilation;
 import ru.practicum.ewm.event.mapper.EventMapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = EventMapper.class)
 public interface CompilationMapper {
 
@@ -17,5 +19,7 @@ public interface CompilationMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "events", ignore = true)
     Compilation mapToCompilation(CompilationNewDto compilationDto, @MappingTarget Compilation compilation);
+
+    List<CompilationDto> toCompilationDtoList (List<Compilation> compilations);
 
 }

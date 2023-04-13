@@ -5,7 +5,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.ewm.client.StatClient;
 import ru.practicum.ewm.compilation.dto.CompilationDto;
 import ru.practicum.ewm.compilation.dto.CompilationNewDto;
 import ru.practicum.ewm.compilation.mapper.CompilationMapper;
@@ -15,8 +14,6 @@ import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.event.repository.EventRepository;
 import ru.practicum.ewm.exception.NotFoundException;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +24,6 @@ public class CompilationServiceImpl implements CompilationService {
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
     private final CompilationMapper compilationMapper;
-    private final StatClient statClient;
 
     @Override
     public CompilationDto create(CompilationNewDto compilationNewDto) {
@@ -55,14 +51,11 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public CompilationDto getCompilation(Long compId) {
         Compilation compilation = getCompilationFromRepository(compId);
-        Set<Event> events = new HashSet<>(compilation.getEvents());
-        events.forEach(event -> event.setViews(statClient.getViews(event.getId())));
         return compilationMapper.toCompilationDto(compilation);
     }
 
     @Override
     public List<CompilationDto> getAllCompilations(Boolean pinned, Integer from, Integer size) {
-
         Pageable pageable = PageRequest.of(from / size, size);
         List<Compilation> compilations;
         if (pinned == null) {
@@ -70,20 +63,9 @@ public class CompilationServiceImpl implements CompilationService {
         } else {
             compilations = compilationRepository.findAllByPinned(pinned, pageable);
         }
-        List<CompilationDto> result = new ArrayList<>();
-        for (Compilation compilation : compilations) {
-            Set<Event> events = compilation.getEvents();
-            events.forEach(event -> event.setViews(statClient.getViews(event.getId())));
-            result.add(compilationMapper.toCompilationDto(compilation));
-        }
-        return result;
-
+        return compilationMapper.toCompilationDtoList(compilations);
     }
 
-    private Event getEventFromRepository(long id) {
-        return eventRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Event with id=%" + id + "was not found"));
-    }
 
     private Compilation getCompilationFromRepository(long id) {
         return compilationRepository.findById(id)

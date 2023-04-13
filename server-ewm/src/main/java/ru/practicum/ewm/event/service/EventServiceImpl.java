@@ -2,7 +2,6 @@ package ru.practicum.ewm.event.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.category.model.Category;
@@ -61,7 +60,6 @@ public class EventServiceImpl implements EventService {
         event.setInitiator(initiator);
         event.setLocation(location);
         event.setCategory(category);
-        eventRepository.save(event);
         return eventMapper.toEventFullDto(eventRepository.save(event));
     }
 
@@ -123,9 +121,8 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<ShortEventDto> getEventsByInitiator(Long initiatorId, Integer from, Integer size) {
         if (userRepository.existsById(initiatorId)) {
-            List<Event> events = eventRepository.findAllByInitiatorId(initiatorId, PageRequest.of(from/size, size));
-            List<ShortEventDto> result = eventMapper.toShortEventDtoList(events);
-            return result;
+            List<Event> events = eventRepository.findAllByInitiatorId(initiatorId, PageRequest.of(from / size, size));
+            return eventMapper.toShortEventDtoList(events);
         } else throw new NotFoundException("User with id=%" + initiatorId + "was not found");
     }
 
@@ -150,7 +147,6 @@ public class EventServiceImpl implements EventService {
         List<Event> events = eventRepository.getEventsByPublic(text, categories, paid, rangeStart, rangeEnd, from, size);
         Map<Long, Integer> eventsParticipantLimit = new HashMap<>();
         events.forEach(event -> eventsParticipantLimit.put(event.getId(), event.getParticipantLimit()));
-        events.stream().map(event -> statClient.getViews(event.getId())).collect(Collectors.toList());
         List<ShortEventDto> eventDtos = eventMapper.toShortEventDtoList(events);
         if (onlyAvailable) {
             eventDtos = eventDtos.stream()
@@ -172,8 +168,7 @@ public class EventServiceImpl implements EventService {
         Event event = getEventFromRepository(id);
         event.setViews(statClient.getViews(id));
         statClient.postStat(servlet, "EWM-server");
-        eventRepository.save(event);
-        return eventMapper.toEventFullDto(event);
+        return eventMapper.toEventFullDto(eventRepository.save(event));
     }
 
     @Override

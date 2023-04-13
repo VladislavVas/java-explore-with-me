@@ -15,12 +15,12 @@ public class Location implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "location_id")
-    Long id;
+    private Long id;
 
     @Column(name = "lat")
-    Float lat;
+    private Float lat;
 
     @Column(name = "lon")
-    Float lon;
+    private Float lon;
 
 }
