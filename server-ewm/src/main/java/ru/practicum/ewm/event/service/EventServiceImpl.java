@@ -7,6 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.category.repository.CategoryRepository;
 import ru.practicum.ewm.client.StatClient;
+import ru.practicum.ewm.comments.dto.CommentDto;
+import ru.practicum.ewm.comments.mapper.CommentMapper;
+import ru.practicum.ewm.comments.repository.CommentRepository;
 import ru.practicum.ewm.event.dto.*;
 import ru.practicum.ewm.event.mapper.EventMapper;
 import ru.practicum.ewm.event.model.Event;
@@ -46,6 +49,9 @@ public class EventServiceImpl implements EventService {
     private final EventMapper eventMapper;
     private final ParticipationRequestMapper requestMapper;
     private final StatClient statClient;
+
+    private final CommentMapper commentMapper;
+    private final CommentRepository commentRepository;
 
     @Override
     @Transactional
@@ -129,7 +135,10 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventFullDto getEventByIdAndInitiatorId(Long initiatorId, Long eventId) {
         if (userRepository.existsById(initiatorId)) {
-            return eventMapper.toEventFullDto(eventRepository.findByIdAndInitiatorId(eventId, initiatorId));
+            EventFullDto eventFullDto = eventMapper.toEventFullDto(eventRepository.findByIdAndInitiatorId(eventId, initiatorId));
+            List<CommentDto> comments = commentMapper.toCommentDtoList(commentRepository.findAllByEventId(eventId));
+            eventFullDto.setComments(comments);
+            return eventFullDto;
         } else throw new NotFoundException("User with id=%" + initiatorId + "was not found");
     }
 
