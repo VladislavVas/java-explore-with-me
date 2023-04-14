@@ -4,12 +4,12 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class EndpointHitDto {
     private String app;
     private String uri;
-    private Long hits;
+    private String ip;
     private String timestamp;
 }

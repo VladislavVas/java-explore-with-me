@@ -4,11 +4,20 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class ViewStats {
     private String app;
     private String uri;
-    private int hits;
+    private long hits;
+
+    @Override
+    public String toString() {
+        return "ViewStats{" +
+                "app='" + app + '\'' +
+                ", uri='" + uri + '\'' +
+                ", hits=" + hits +
+                '}';
+    }
 }

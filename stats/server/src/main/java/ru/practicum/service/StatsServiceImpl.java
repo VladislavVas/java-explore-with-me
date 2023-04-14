@@ -5,11 +5,8 @@ import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStats;
 import ru.practicum.mapper.EndPointHitMapper;
 import ru.practicum.repository.StatsRepository;
-import ru.practicum.stats.stats.model.EndpointHit;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -17,31 +14,21 @@ public class StatsServiceImpl implements StatsService {
 
     private final StatsRepository statsRepository;
 
-    private final EndPointHitMapper mapper;
+    private final EndPointHitMapper endPointHitMapper;
 
-    public StatsServiceImpl(StatsRepository statsRepository, EndPointHitMapper mapper) {
+    public StatsServiceImpl(StatsRepository statsRepository, EndPointHitMapper endPointHitMapper) {
         this.statsRepository = statsRepository;
-        this.mapper = mapper;
+        this.endPointHitMapper = endPointHitMapper;
     }
 
     @Override
     public EndpointHitDto postHit(EndpointHitDto endpointHitDto) {
-        return mapper.toEndpointHitDto(statsRepository.save(mapper.toEndpointHit(endpointHitDto)));
+        return endPointHitMapper.toEndpointHitDto(statsRepository.save(endPointHitMapper.toEndpointHit(endpointHitDto)));
     }
 
     @Override
-    public List<ViewStats> getViewStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
-        List<ViewStats> viewStats = new ArrayList<>();
-        List<EndpointHit> hitsList;
-        for (String uri : uris) {
-            if (unique) {
-                hitsList = statsRepository.findDistinctByUriInAndTimestampBetween(List.of(uri), start, end);
-            } else {
-                hitsList = statsRepository.findByUriInAndTimestampBetween(List.of(uri), start, end);
-            }
-            viewStats.add(new ViewStats("ewm-main-service", uri, hitsList.size()));
-            viewStats.sort(Comparator.comparing(ViewStats::getHits).reversed());
-        }
-        return viewStats;
+    public List<ViewStats> getViewStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+        return statsRepository.getHits(start, end, uris, unique);
     }
+
 }
