@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.comments.dto.CommentDto;
 import ru.practicum.ewm.comments.service.CommentService;
 
-import javax.validation.constraints.Min;
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
@@ -23,13 +25,16 @@ public class CommentPublicController {
 
 
     @GetMapping
-    public ResponseEntity<List<CommentDto>> getAllCommentsForEvent(@RequestParam @Min(1) Long eventId) {
+    public ResponseEntity<List<CommentDto>> getAllCommentsForEvent(
+            @RequestParam @Positive Long eventId,
+            @Valid @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+            @Valid @Positive @RequestParam(defaultValue = "10") Integer size) {
         log.info("Get all comments for event id= " + eventId);
-        return ResponseEntity.status(HttpStatus.OK).body(commentService.getCommentsForEvent(eventId));
+        return ResponseEntity.status(HttpStatus.OK).body(commentService.getCommentsForEvent(eventId, from, size));
     }
 
     @GetMapping("{commentId}")
-    public ResponseEntity<CommentDto> getCommentById(@PathVariable @Min(1) Long commentId) {
+    public ResponseEntity<CommentDto> getCommentById(@PathVariable @Positive Long commentId) {
         log.info("Get comment id= " + commentId);
         return ResponseEntity.status(HttpStatus.OK).body(commentService.getComment(commentId));
     }

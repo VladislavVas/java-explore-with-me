@@ -708,7 +708,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/admin/users/:userId/comments/:commentId",
+					"raw": "http://localhost:8080/admin/users/comments/:commentId",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -717,15 +717,10 @@
 					"path": [
 						"admin",
 						"users",
-						":userId",
 						"comments",
 						":commentId"
 					],
 					"variable": [
-						{
-							"key": "userId",
-							"value": "64"
-						},
 						{
 							"key": "commentId",
 							"value": "1"

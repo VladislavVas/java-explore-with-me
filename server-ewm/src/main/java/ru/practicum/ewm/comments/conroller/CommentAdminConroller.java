@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.ewm.comments.service.CommentService;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 
 @Slf4j
 @Validated
@@ -23,10 +23,11 @@ public class CommentAdminConroller {
 
     private final CommentService commentService;
 
-    @DeleteMapping("{userId}/comments/{commentId}")
-    public ResponseEntity<Void> deleteCommentAdmin(@PathVariable @Min(1) Long userId,
-                                                   @PathVariable @Min(1) Long commentId) {
+    //    @DeleteMapping("{userId}/comments/{commentId}")
+    @DeleteMapping("comments/{commentId}")
+    public ResponseEntity<Void> deleteCommentAdmin(@PathVariable @Positive Long commentId) {
         commentService.deleteCommentByAdmin(commentId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
 }

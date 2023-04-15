@@ -1,6 +1,8 @@
 package ru.practicum.ewm.comments.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.comments.dto.CommentDto;
 import ru.practicum.ewm.comments.mapper.CommentMapper;
@@ -31,9 +33,9 @@ public class CommentServiceImpl implements CommentService {
         User user = getUserFromRepository(userId);
         Event event = getEventFromRepository(eventId);
         if (event.getState().equals(State.PUBLISHED)) {
-        Comment comment = commentMapper.toComment(user, event, text);
-        return commentMapper.toCommentDto(commentRepository.save(comment));}
-        else {
+            Comment comment = commentMapper.toComment(user, event, text);
+            return commentMapper.toCommentDto(commentRepository.save(comment));
+        } else {
             throw new ConflictException("You cannot comment on an unpublished event");
         }
     }
@@ -63,8 +65,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDto> getCommentsForEvent(Long eventId) {
-        List<Comment> comments = commentRepository.findAllByEventId(eventId);
+    public List<CommentDto> getCommentsForEvent(Long eventId, Integer from, Integer size) {
+        Pageable pageable = PageRequest.of(from / size, size);
+        List<Comment> comments = commentRepository.findAllByEventId(eventId, pageable);
         return commentMapper.toCommentDtoList(comments);
     }
 

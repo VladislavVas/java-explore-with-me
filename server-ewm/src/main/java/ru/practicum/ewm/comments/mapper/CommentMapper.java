@@ -13,9 +13,6 @@ import java.util.List;
 public interface CommentMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "user", target = "user")
-    @Mapping(source = "event", target = "event")
-    @Mapping(source = "text", target = "text")
     Comment toComment(User user, Event event, String text);
 
     @Mapping(source = "created", target = "created", dateFormat = "yyyy-MM-dd HH:mm:ss")
