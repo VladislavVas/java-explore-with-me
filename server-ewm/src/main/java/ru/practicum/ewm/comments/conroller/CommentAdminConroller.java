@@ -23,7 +23,6 @@ public class CommentAdminConroller {
 
     private final CommentService commentService;
 
-    //    @DeleteMapping("{userId}/comments/{commentId}")
     @DeleteMapping("comments/{commentId}")
     public ResponseEntity<Void> deleteCommentAdmin(@PathVariable @Positive Long commentId) {
         commentService.deleteCommentByAdmin(commentId);
