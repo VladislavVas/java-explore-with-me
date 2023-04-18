@@ -5,11 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.ewm.category.dto.CategoryDto;
+import ru.practicum.ewm.comments.dto.CommentDto;
 import ru.practicum.ewm.event.model.Location;
 import ru.practicum.ewm.event.model.State;
 import ru.practicum.ewm.user.dto.UserShortDto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -48,5 +51,7 @@ public class EventFullDto {
     private Integer views;
 
     private Boolean requestModeration;
+
+    private List<CommentDto> comments = new ArrayList<>();
 
 }
